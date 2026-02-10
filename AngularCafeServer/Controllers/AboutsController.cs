@@ -26,7 +26,8 @@ namespace AngularCafeServer.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<About>>> GetAbouts()
         {
-            return await _context.Abouts.ToListAsync();
+            var abouts = await _context.Abouts.ToListAsync();
+            return abouts;
         }
 
         // GET: api/Abouts/5
