@@ -28,7 +28,7 @@ namespace AngularCafeServer.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Menu>> GetMenu(int id)
         {
-            var menu = await _context.Menus.FindAsync(id);
+            var menu = await _context.Menus.Include(x=>x.Category).FirstOrDefaultAsync(x=>x.Id == id);
 
             if (menu == null)
             {
@@ -36,6 +36,13 @@ namespace AngularCafeServer.Controllers
             }
 
             return menu;
+        }
+
+        [HttpGet("latestFour")]
+        public async Task<IActionResult> GetLatesFour()
+        {
+            var values = await _context.Menus.Include(x => x.Category).OrderBy(x=>x.Id).Take(4).ToListAsync();
+            return Ok(values);
         }
 
         // PUT: api/Menus/5
